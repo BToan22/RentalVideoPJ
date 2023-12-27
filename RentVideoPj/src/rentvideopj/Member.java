@@ -230,7 +230,7 @@ public class Member extends javax.swing.JFrame {
         String phone = txtAddress.getText();
         String addr = txtPhone.getText();
         DBAccess acc = new DBAccess();
-        ResultSet rs = acc.Query("DELETE FROM Customers WHERE ID='" + ID + "'");
+        ResultSet rs = acc.Query("UPDATE Customers SET isActive = '0' where ID = '" + ID + "'");
     }//GEN-LAST:event_btnDelActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -281,8 +281,9 @@ public class Member extends javax.swing.JFrame {
     int FindMember(String ID) {
         int result = -1;
         for (int i = 0; i < tblMember.getRowCount(); i++) {
-            if (tblMember.getValueAt(i, 1).equals(ID)) {
+            if (tblMember.getValueAt(i, 0).equals(ID)) {
                 result = i;
+                System.out.print(result);
             }
         }
         return result;
@@ -295,7 +296,7 @@ public class Member extends javax.swing.JFrame {
 
             int result = FindMember(txtID.getText());
             if (txtID.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "Membẻ ID cannot be plank");
+                JOptionPane.showMessageDialog(null, "Member ID cannot be plank");
                 txtID.requestFocus();
                 return;
             } else if (txtName.getText().equals("")) {
@@ -330,14 +331,18 @@ public class Member extends javax.swing.JFrame {
 
                     DBAccess acc = new DBAccess();
                     ResultSet rs = acc.Query("Insert into Customers(ID, Name, DOB, Phone, Address, DateCreated, StatusRent, IsActive) values ('"
-                            + ID + "', '" + name + "', '" + dob + "', '" + Phone + "', '" + addr +"', '" + currentDate + "', '" + Status + "', '" + isActive + "')");
+                            + ID + "', '" + name + "', '" + dob + "', '" + Phone + "', '" + addr + "', '" + currentDate + "', '" + Status + "', '" + isActive + "')");
                     clear();
                     scanSQL();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, ex.toString());
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Member ID must not be the same ");
+                String ID = txtID.getText();
+                DBAccess acc = new DBAccess();
+                acc.Query("Update Customers set isActive = '1' where ID = '" + ID + "'");
+                clear();
+                scanSQL();
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.toString());
@@ -390,8 +395,10 @@ public class Member extends javax.swing.JFrame {
                 String dateCreate = rs.getString(6);
                 String statusRent = rs.getString(7);
                 String isActive = rs.getString(8);
+
                 String[] QQ = {id, name, dob, phone, addr, dateCreate, statusRent, isActive};
                 tableModel.addRow(QQ);
+
             }
         } catch (Exception ex) {
 
