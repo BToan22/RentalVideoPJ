@@ -295,11 +295,11 @@ public class Member extends javax.swing.JFrame {
 
             int result = FindMember(txtID.getText());
             if (txtID.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "Student ID cannot be plank");
+                JOptionPane.showMessageDialog(null, "Membẻ ID cannot be plank");
                 txtID.requestFocus();
                 return;
             } else if (txtName.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "Student Name cannot be plank");
+                JOptionPane.showMessageDialog(null, "Member Name cannot be plank");
                 txtName.requestFocus();
                 return;
             } else if (txtPhone.getText().equals("")) {
@@ -307,11 +307,11 @@ public class Member extends javax.swing.JFrame {
                 txtPhone.requestFocus();
                 return;
             } else if (txtAddress.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "HomeTown cannot be plank");
+                JOptionPane.showMessageDialog(null, "Address cannot be plank");
                 txtAddress.requestFocus();
                 return;
             } else if (txtDOB.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "Gender cannot be plank");
+                JOptionPane.showMessageDialog(null, "Date of Birth cannot be plank");
                 txtDOB.requestFocus();
                 return;
             }
@@ -329,9 +329,10 @@ public class Member extends javax.swing.JFrame {
                 try {
 
                     DBAccess acc = new DBAccess();
-                    ResultSet rs = acc.Query("Insert into Customer(ID, Name, DOB, Phone, Address, DateCreated, StatusRent, IsActive) values ('"
-                            + ID + "', '" + name + "', '" + Phone + "', '" + addr +"', '");
-
+                    ResultSet rs = acc.Query("Insert into Customers(ID, Name, DOB, Phone, Address, DateCreated, StatusRent, IsActive) values ('"
+                            + ID + "', '" + name + "', '" + dob + "', '" + Phone + "', '" + addr +"', '" + currentDate + "', '" + Status + "', '" + isActive + "')");
+                    clear();
+                    scanSQL();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, ex.toString());
                 }
