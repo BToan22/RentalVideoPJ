@@ -24,16 +24,21 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="507" max="32767" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="502" max="-2" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
-              <EmptySpace min="-2" pref="357" max="-2" attributes="0"/>
-              <Component id="Borrow" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
-              <Component id="Customer" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="364" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="366" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="btnRentVideo" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
+                      <Component id="btnMember" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="btnReturn" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -42,12 +47,14 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="Customer" alignment="3" min="-2" pref="101" max="-2" attributes="0"/>
-                  <Component id="Borrow" alignment="3" min="-2" pref="100" max="-2" attributes="0"/>
+                  <Component id="btnMember" alignment="3" min="-2" pref="104" max="-2" attributes="0"/>
+                  <Component id="btnRentVideo" alignment="3" min="-2" pref="100" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="263" max="32767" attributes="0"/>
+              <EmptySpace pref="52" max="32767" attributes="0"/>
+              <Component id="btnReturn" min="-2" pref="100" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="99" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -61,7 +68,7 @@
         <Property name="text" type="java.lang.String" value="HOME"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="Customer">
+    <Component class="javax.swing.JButton" name="btnMember">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="24" style="1"/>
@@ -69,10 +76,21 @@
         <Property name="text" type="java.lang.String" value="Member"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CustomerActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMemberActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="Borrow">
+    <Component class="javax.swing.JButton" name="btnReturn">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="24" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Return Video"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReturnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnRentVideo">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="24" style="1"/>
@@ -80,7 +98,7 @@
         <Property name="text" type="java.lang.String" value="Rent Video"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BorrowActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRentVideoActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

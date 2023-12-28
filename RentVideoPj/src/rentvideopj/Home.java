@@ -27,27 +27,36 @@ public class Home extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        Customer = new javax.swing.JButton();
-        Borrow = new javax.swing.JButton();
+        btnMember = new javax.swing.JButton();
+        btnReturn = new javax.swing.JButton();
+        btnRentVideo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("HOME");
 
-        Customer.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        Customer.setText("Member");
-        Customer.addActionListener(new java.awt.event.ActionListener() {
+        btnMember.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnMember.setText("Member");
+        btnMember.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CustomerActionPerformed(evt);
+                btnMemberActionPerformed(evt);
             }
         });
 
-        Borrow.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        Borrow.setText("Rent Video");
-        Borrow.addActionListener(new java.awt.event.ActionListener() {
+        btnReturn.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnReturn.setText("Return Video");
+        btnReturn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BorrowActionPerformed(evt);
+                btnReturnActionPerformed(evt);
+            }
+        });
+
+        btnRentVideo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnRentVideo.setText("Rent Video");
+        btnRentVideo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRentVideoActionPerformed(evt);
             }
         });
 
@@ -56,40 +65,50 @@ public class Home extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(507, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(502, 502, 502))
             .addGroup(layout.createSequentialGroup()
-                .addGap(357, 357, 357)
-                .addComponent(Borrow)
-                .addGap(81, 81, 81)
-                .addComponent(Customer)
-                .addContainerGap(364, Short.MAX_VALUE))
+                .addGap(366, 366, 366)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnRentVideo)
+                        .addGap(72, 72, 72)
+                        .addComponent(btnMember))
+                    .addComponent(btnReturn))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Customer, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Borrow, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(263, Short.MAX_VALUE))
+                    .addComponent(btnMember, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRentVideo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addComponent(btnReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(99, 99, 99))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void CustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CustomerActionPerformed
+    private void btnMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMemberActionPerformed
         // TODO add your handling code here:
         new Member().setVisible(true);
-    }//GEN-LAST:event_CustomerActionPerformed
+    }//GEN-LAST:event_btnMemberActionPerformed
 
-    private void BorrowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BorrowActionPerformed
+    private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
+        // TODO add your handling code here:
+        new ReturnVideo().setVisible(true);
+    }//GEN-LAST:event_btnReturnActionPerformed
+
+    private void btnRentVideoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentVideoActionPerformed
         // TODO add your handling code here:
         new RentVideo().setVisible(true);
-    }//GEN-LAST:event_BorrowActionPerformed
+    }//GEN-LAST:event_btnRentVideoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -127,8 +146,9 @@ public class Home extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Borrow;
-    private javax.swing.JButton Customer;
+    private javax.swing.JButton btnMember;
+    private javax.swing.JButton btnRentVideo;
+    private javax.swing.JButton btnReturn;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
