@@ -12,8 +12,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 /**
  *
  * @author ASUS
@@ -41,10 +45,32 @@ public class ReturnVideo extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtID = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtDOR = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblReturn = new javax.swing.JTable();
+        txtDOReturn = new javax.swing.JTextField();
         btnUpdate = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        txtIDRent = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtDORent = new javax.swing.JTextField();
+        txtSTReturn = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel8 = new javax.swing.JLabel();
+        txtName = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        txtStatus = new javax.swing.JTextField();
+        txtActive = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        btnShowDetail = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        txtOverdate = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        txtFee = new javax.swing.JTextField();
+        txtPriceRent6 = new javax.swing.JLabel();
+        txtPriceRent5 = new javax.swing.JLabel();
+        txtCusPay = new javax.swing.JTextField();
+        txtExchange = new javax.swing.JLabel();
+        btnBack = new javax.swing.JButton();
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("ID:");
@@ -58,6 +84,9 @@ public class ReturnVideo extends javax.swing.JFrame {
         jLabel3.setText("ID:");
 
         txtID.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIDKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtIDKeyTyped(evt);
             }
@@ -66,22 +95,7 @@ public class ReturnVideo extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("Day Of Return:");
 
-        tblReturn.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Rent ID", "Borrow Date", "Return Date", "Total", "ID", "Name"
-            }
-        ));
-        jScrollPane1.setViewportView(tblReturn);
-        if (tblReturn.getColumnModel().getColumnCount() > 0) {
-            tblReturn.getColumnModel().getColumn(1).setResizable(false);
-        }
+        txtDOReturn.setEditable(false);
 
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnUpdate.setText("Update");
@@ -91,45 +105,269 @@ public class ReturnVideo extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel5.setText("ID Rent:");
+
+        txtIDRent.setEditable(false);
+        txtIDRent.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIDRentKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtIDRentKeyTyped(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel6.setText("Day Of Rent:");
+
+        txtDORent.setEditable(false);
+
+        txtSTReturn.setEditable(false);
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel7.setText("Status Return:");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Name video", "Amount", "Price"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(jTable1);
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel8.setText("Name:");
+
+        txtName.setEditable(false);
+        txtName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNameKeyTyped(evt);
+            }
+        });
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel9.setText("Status Rent");
+
+        txtStatus.setEditable(false);
+
+        txtActive.setEditable(false);
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel13.setText("Active");
+
+        btnShowDetail.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnShowDetail.setText("Show Detail");
+        btnShowDetail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShowDetailActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel10.setText("Out of date");
+
+        txtOverdate.setEditable(false);
+        txtOverdate.setText("0");
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel11.setText("Fee");
+
+        txtFee.setEditable(false);
+        txtFee.setText("0");
+
+        txtPriceRent6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtPriceRent6.setText("Exchange:");
+
+        txtPriceRent5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtPriceRent5.setText("Money customer pay: ");
+
+        txtCusPay.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCusPayKeyReleased(evt);
+            }
+        });
+
+        txtExchange.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtExchange.setText("0");
+        txtExchange.setToolTipText("");
+
+        btnBack.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnBack.setText("Back");
+        btnBack.setActionCommand("");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel3))
+                        .addGap(54, 54, 54)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtName)
+                            .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtActive, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGap(63, 63, 63)
+                            .addComponent(jLabel5)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtIDRent, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGap(62, 62, 62)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel4)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txtDOReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel6)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtDORent, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(jLabel7)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtSTReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(122, 122, 122))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(354, 354, 354))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(115, 115, 115)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnUpdate)
-                            .addComponent(txtDOR))))
-                .addContainerGap(129, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(47, 47, 47)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel11)
+                                            .addComponent(jLabel10))
+                                        .addGap(99, 99, 99))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtPriceRent5, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(txtPriceRent6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtOverdate, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtFee, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtExchange, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCusPay, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(btnShowDetail)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnUpdate)
+                                .addGap(78, 78, 78)))
+                        .addGap(0, 6, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnBack))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtDOR, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                .addComponent(btnUpdate)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(8, 8, 8)
+                                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel8)
+                                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel9))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel5)
+                                    .addComponent(txtIDRent, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(6, 6, 6)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtDORent, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel6))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtDOReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtSTReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel7)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtActive, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel13))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10)
+                            .addComponent(txtOverdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtFee, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtPriceRent5)
+                            .addComponent(txtCusPay, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtPriceRent6)
+                            .addComponent(txtExchange))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnUpdate)
+                            .addComponent(btnShowDetail)
+                            .addComponent(btnBack)))))
         );
 
         pack();
@@ -137,38 +375,217 @@ public class ReturnVideo extends javax.swing.JFrame {
 
     private void txtIDKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIDKeyTyped
 
-        DefaultTableModel tableModel = (DefaultTableModel) tblReturn.getModel();
-        tableModel.setRowCount(0);
-        String ID = txtID.getText();
-        try {
-            DBAccess acc = new DBAccess();
-            ResultSet rs = acc.Query("select* from Customers where ID like '" + ID + "%'");
-
-            while (rs.next()) {
-                String id = rs.getString(1);
-                String name = rs.getString(2);
-                String dob = rs.getString(3);
-                String phone = rs.getString(4);
-                String addr = rs.getString(5);
-                String dateCreate = rs.getString(6);
-                String statusRent = rs.getString(7);
-                String isActive = rs.getString(8);
-                String[] QQ = {id, name, dob, phone, addr, dateCreate, statusRent, isActive};
-                tableModel.addRow(QQ);
-            }
-        } catch (Exception ex) {
-
-        }
+//        DefaultTableModel tableModel = (DefaultTableModel) tblReturn.getModel();
+//        tableModel.setRowCount(0);
+//        String ID = txtID.getText();
+//        try {
+//            DBAccess acc = new DBAccess();
+//            ResultSet rs = acc.Query("select* from Customers where ID like '" + ID + "%'");
+//
+//            while (rs.next()) {
+//                String id = rs.getString(1);
+//                String name = rs.getString(2);
+//                String dob = rs.getString(3);
+//                String phone = rs.getString(4);
+//                String addr = rs.getString(5);
+//                String dateCreate = rs.getString(6);
+//                String statusRent = rs.getString(7);
+//                String isActive = rs.getString(8);
+//                String[] QQ = {id, name, dob, phone, addr, dateCreate, statusRent, isActive};
+//                tableModel.addRow(QQ);
+//            }
+//        } catch (Exception ex) {
+//
+//        }
     }//GEN-LAST:event_txtIDKeyTyped
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        DefaultTableModel tblModel = (DefaultTableModel) tblReturn.getModel();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        
-
+//        DefaultTableModel tblModel = (DefaultTableModel) tblReturn.getModel();
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        Date date = new Date();
+            update();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    private void txtIDRentKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIDRentKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIDRentKeyTyped
+
+    private void txtNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNameKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNameKeyTyped
+
+    private void txtIDKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIDKeyReleased
+        // TODO add your handling code here:
+        String idCus = txtID.getText();
+        if (idCus.isEmpty()) {
+            clearFields();  
+            return;
+        }
+        DBAccess acc = new DBAccess();
+        ResultSet rs = acc.Query("SELECT * FROM Customers WHERE ID =  '" + idCus + "'");       
+        try {
+            if (rs.next()) {
+                String name = rs.getString("Name");
+                int SRent= rs.getInt("STATUSRENT");
+                int Active= rs.getInt("iSACTIVE");
+                if (SRent == 0){
+                    txtStatus.setText("Not Rented");
+                }else{
+                    txtStatus.setText("Rented");
+                }               
+                if (Active == 0){
+                    txtActive.setText("Inactive");
+                }else{
+                    txtActive.setText("Active");
+                }
+                txtName.setText(name);                
+            } else {
+                txtName.setText("No data found");              
+                txtActive.setText(null);
+                txtStatus.setText(null); 
+            }
+        } catch (SQLException ex) {
+            // Handle any SQL exception
+            JOptionPane.showMessageDialog(null, ex.toString(),"NULL",JOptionPane.ERROR_MESSAGE);       
+        }
+        
+        ResultSet rs1 = acc.Query("SELECT * FROM RentalTransaction WHERE ID = '" + idCus + "' AND STATUSRETURN = 0");
+        try {
+            if (rs1.next()) {
+                String IDRent = rs1.getString("IDRENT");
+                String DOBRR= rs1.getString("DATEOFBORROW");
+                String DORE=rs1.getString("DATEOFRETURN");
+                int price= rs1.getInt("TOTALPRICE");
+                int stt= rs1.getInt("STATUSRETURN");
+                 if (stt == 0){
+                    txtSTReturn.setText("Not yet Renturned");
+                }else{
+                    txtSTReturn.setText("Returned");
+                } 
+                txtIDRent.setText(IDRent);
+                txtDORent.setText(DOBRR);
+                txtDOReturn.setText(DORE);                  
+                LocalDate currentDate = LocalDate.now();
+                LocalDate inputDate = LocalDate.parse(DORE, DateTimeFormatter.ofPattern("yyyy-MM-dd"));                
+                long daysDifference = currentDate.toEpochDay() - inputDate.toEpochDay();
+                    if(daysDifference <0){
+                        txtOverdate.setText( "0");   
+                        txtFee.setText("0");
+                    }else{
+                        txtOverdate.setText( String.valueOf(daysDifference));                
+                        int perfee= (price * 10) / 100;
+                        long fee= perfee * daysDifference;
+                        txtFee.setText(String.valueOf(fee));
+                    }
+                
+                
+                          
+            } else {
+                txtIDRent.setText("No data found");                             
+            }
+        } catch (SQLException ex) {
+            // Handle any SQL exception
+            JOptionPane.showMessageDialog(null, ex.toString(),"NULL",JOptionPane.ERROR_MESSAGE);       
+        }
+               
+    }//GEN-LAST:event_txtIDKeyReleased
+
+    private void txtIDRentKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIDRentKeyReleased
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_txtIDRentKeyReleased
+
+    private void btnShowDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowDetailActionPerformed
+        // TODO add your handling code here:
+        showDetail();
+    }//GEN-LAST:event_btnShowDetailActionPerformed
+
+    private void txtCusPayKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCusPayKeyReleased
+        // TODO add your handling code here:
+        int cuspay= Integer.parseInt(txtCusPay.getText()) ;
+        int total=Integer.parseInt(txtFee.getText());
+        int exchange= cuspay - total;
+        txtExchange.setText(String.valueOf(exchange));
+    }//GEN-LAST:event_txtCusPayKeyReleased
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        new Home().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnBackActionPerformed
+    private void clearFields(){
+        txtName.setText(null);              
+        txtActive.setText(null);
+        txtStatus.setText(null); 
+        txtIDRent.setText(null);
+        txtSTReturn.setText(null);
+        txtDORent.setText(null);
+        txtDOReturn.setText(null);
+    }
+    private void showDetail(){
+        try{
+            DefaultTableModel jtb = (DefaultTableModel)jTable1.getModel();
+            int idrent=Integer.parseInt(txtIDRent.getText());
+            DBAccess acc = new DBAccess();
+            ResultSet rs1 = acc.Query("SELECT Video.ID, Video.Name, DetailTransaction.Amount, RentalFee " +
+                          "FROM DetailTransaction " +
+                          "JOIN Video " +
+                          "ON DetailTransaction.IDVid = Video.ID " +
+                          "WHERE DetailTransaction.IDRent = " + idrent + ";");
+            
+            while(rs1.next()){
+                String amount=Integer.toString(rs1.getInt("AMOUNT"));
+                String Name=rs1.getString("NAME");
+                String price=Integer.toString(rs1.getInt("RENTALFEE"));
+                String id= Integer.toString(rs1.getInt("ID"));
+                String sLec[]={id,Name,amount,price};
+                jtb.addRow(sLec);
+        }
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex.toString(),"NULL",JOptionPane.ERROR_MESSAGE);
+        }        
+    }
+    private void update(){
+        LocalDate currentDate = LocalDate.now(); 
+        String idCus= txtID.getText();
+        String idRent = txtIDRent.getText();
+        String date= currentDate.toString();
+        DBAccess a = new DBAccess();
+        int price=0;
+        try{
+            DefaultTableModel jtb = (DefaultTableModel)jTable1.getModel();
+            int rowCount = jtb.getRowCount();
+            System.out.println(rowCount);
+            for (int i = 0; i < rowCount; i++) {
+                String id =  (String) jtb.getValueAt(i, 0);            
+                String  amount = (String) jtb.getValueAt(i, 2);  
+                System.out.println("id:  "+id);
+                System.out.println("amount: "+amount);
+                a.Query("UPDATE Video SET Amount = Amount +'"+amount+"' WHERE ID ="+ id);  
+            }
+        }catch(Exception ex){
+             JOptionPane.showMessageDialog(null, ex.toString(),"NULL",JOptionPane.ERROR_MESSAGE);    
+        }
+        a.Query("UPDATE Customers SET STATUSRENT =0 WHERE ID ="+ idCus);  
+        ResultSet rs1 = a.Query("SELECT TOTALPRICE FROM RentalTransaction WHERE IDRENT = '" + idRent + "' AND STATUSRETURN = 0"); 
+        try{
+            if (rs1.next()) {    
+                price= rs1.getInt("TOTALPRICE");                                         
+            } else {
+                txtIDRent.setText("No data found");                             
+            }
+        }catch(SQLException ex){
+             JOptionPane.showMessageDialog(null, ex.toString(),"NULL",JOptionPane.ERROR_MESSAGE);      
+        }
+        int fee= Integer.parseInt(txtFee.getText());
+        int newTotal= price + fee;
+        a.Query("UPDATE RentalTransaction SET DATEOFRETURN ='" + date + "',TOTALPRICE ='" + newTotal + "', STATUSRETURN = '1' WHERE IDRent= '" + idRent + "'");  
+                
+    }
+    public void ClearJTable(){
+        DefaultTableModel jtb = (DefaultTableModel)jTable1.getModel();
+        jtb.setRowCount(0); 
+    }
     /**
      * @param args the command line arguments
      */
@@ -205,14 +622,36 @@ public class ReturnVideo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnShowDetail;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblReturn;
-    private javax.swing.JTextField txtDOR;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField txtActive;
+    private javax.swing.JTextField txtCusPay;
+    private javax.swing.JTextField txtDORent;
+    private javax.swing.JTextField txtDOReturn;
+    private javax.swing.JLabel txtExchange;
+    private javax.swing.JTextField txtFee;
     private javax.swing.JTextField txtID;
+    private javax.swing.JTextField txtIDRent;
+    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtOverdate;
+    private javax.swing.JLabel txtPriceRent5;
+    private javax.swing.JLabel txtPriceRent6;
+    private javax.swing.JTextField txtSTReturn;
+    private javax.swing.JTextField txtStatus;
     // End of variables declaration//GEN-END:variables
 }
