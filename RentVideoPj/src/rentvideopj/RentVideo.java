@@ -9,19 +9,29 @@ import java.awt.event.ActionListener;
 import rentvideopj.DBAccess;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Admin
  */
 public class RentVideo extends javax.swing.JFrame {
-    LocalDate currentDate = LocalDate.now();
+    int checkTransaction=0;
+    int Total=0;
+    LocalDate currentDate = LocalDate.now();          
+    
     
     /**
      * Creates new form RentVideo
@@ -35,6 +45,7 @@ public class RentVideo extends javax.swing.JFrame {
             }
         });
         timer.start();
+        
         
     }
     
@@ -76,7 +87,7 @@ public class RentVideo extends javax.swing.JFrame {
         txtAu = new javax.swing.JTextField();
         btnBack = new javax.swing.JButton();
         txtPriceRent2 = new javax.swing.JLabel();
-        txtIdVid1 = new javax.swing.JTextField();
+        txtQuantity = new javax.swing.JTextField();
         txtPriceRent3 = new javax.swing.JLabel();
         txtAmount = new javax.swing.JTextField();
         btnAdd = new javax.swing.JButton();
@@ -84,7 +95,7 @@ public class RentVideo extends javax.swing.JFrame {
         txtPriceRent5 = new javax.swing.JLabel();
         txtPriceRent6 = new javax.swing.JLabel();
         txtTotalPrice = new javax.swing.JLabel();
-        txtIdVid2 = new javax.swing.JTextField();
+        txtCusPay = new javax.swing.JTextField();
         txtExchange = new javax.swing.JLabel();
         btnPay = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
@@ -94,6 +105,7 @@ public class RentVideo extends javax.swing.JFrame {
         labelDate = new javax.swing.JLabel();
         labelTime = new javax.swing.JLabel();
         txtPriceRent7 = new javax.swing.JLabel();
+        selectDay = new com.toedter.calendar.JDateChooser();
 
         txtPriceRent1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtPriceRent1.setText("PriceOfDay");
@@ -101,21 +113,21 @@ public class RentVideo extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAutoRequestFocus(false);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Rent Video");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("ID");
 
         txtNameVid.setEditable(false);
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Name");
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("DOB");
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel5.setText("Phone");
 
         txtDOB.setEditable(false);
@@ -124,24 +136,21 @@ public class RentVideo extends javax.swing.JFrame {
 
         txtNameCus.setEditable(false);
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel6.setText("Status Rent");
 
         txtStatus.setEditable(false);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Name video", "Amount", "Number of Rental Day", "Price"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -155,16 +164,16 @@ public class RentVideo extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(3).setMinWidth(2);
         }
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel7.setText("Video");
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel8.setText("Customer");
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel9.setText("ID");
 
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel10.setText("Name");
 
         txtIdCus.addActionListener(new java.awt.event.ActionListener() {
@@ -188,18 +197,18 @@ public class RentVideo extends javax.swing.JFrame {
 
         txtPrice.setEditable(false);
 
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel11.setText("Type");
 
-        txtAuthor.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtAuthor.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtAuthor.setText("Author");
 
-        txtPriceRent.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtPriceRent.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtPriceRent.setText("PriceOfDay");
 
         txtAu.setEditable(false);
 
-        btnBack.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnBack.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnBack.setText("Back");
         btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -207,31 +216,45 @@ public class RentVideo extends javax.swing.JFrame {
             }
         });
 
-        txtPriceRent2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtPriceRent2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtPriceRent2.setText("Quantity");
 
-        txtPriceRent3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtPriceRent3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtPriceRent3.setText("Amount in Store");
 
         txtAmount.setEditable(false);
 
+        btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnAdd.setText("Add");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
-        txtPriceRent4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtPriceRent4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtPriceRent4.setText("Total:");
 
-        txtPriceRent5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtPriceRent5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtPriceRent5.setText("Money customer pay: ");
 
-        txtPriceRent6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtPriceRent6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtPriceRent6.setText("Exchange:");
 
         txtTotalPrice.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtTotalPrice.setText("jLabel12");
+        txtTotalPrice.setText("0");
+
+        txtCusPay.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCusPayKeyReleased(evt);
+            }
+        });
 
         txtExchange.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtExchange.setText("jLabel12");
+        txtExchange.setText("0");
+        txtExchange.setToolTipText("");
 
+        btnPay.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnPay.setText("Pay");
         btnPay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -239,12 +262,12 @@ public class RentVideo extends javax.swing.JFrame {
             }
         });
 
-        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel12.setText("Address");
 
         txtActive.setEditable(false);
 
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel13.setText("Active");
 
         txtAddr.setEditable(false);
@@ -255,7 +278,7 @@ public class RentVideo extends javax.swing.JFrame {
 
         labelTime.setText(".");
 
-        txtPriceRent7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtPriceRent7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtPriceRent7.setText("Date Of Return");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -272,14 +295,14 @@ public class RentVideo extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtActive, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(67, 67, 67)
-                                .addComponent(txtPriceRent2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtIdVid1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtPriceRent2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(205, 205, 205)
-                                .addComponent(txtPriceRent7, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE))
+                                .addComponent(txtPriceRent7, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(selectDay, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -313,65 +336,54 @@ public class RentVideo extends javax.swing.JFrame {
                                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(67, 67, 67)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(67, 67, 67)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtAuthor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtPriceRent, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel7))
-                                        .addGap(18, 18, 18))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtPriceRent3)
-                                        .addGap(18, 18, 18)))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtAuthor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtPriceRent, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel7))
+                                    .addComponent(txtPriceRent3, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtIdVid, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtNameVid, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtType, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtAu, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(130, 130, 130)
                                 .addComponent(labelDate, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(labelTime, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 4, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(btnAdd)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
+                                .addGap(116, 116, 116)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtPriceRent4)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtPriceRent5, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtPriceRent6))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(txtExchange, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(0, 0, Short.MAX_VALUE))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addGap(0, 0, Short.MAX_VALUE)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(txtIdVid2, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(366, 366, 366)
-                                .addComponent(btnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
+                                    .addComponent(txtPriceRent6)
+                                    .addComponent(txtPriceRent4)
+                                    .addComponent(txtPriceRent5, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtExchange, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCusPay, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnAdd)
+                                .addGap(0, 475, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -415,7 +427,12 @@ public class RentVideo extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtAddr, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel12)))))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtPriceRent4)
+                            .addComponent(txtTotalPrice)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(123, 123, 123)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -443,47 +460,45 @@ public class RentVideo extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(txtTotalPrice)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtIdVid2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel6))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtActive, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel13))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addComponent(jLabel13)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtCusPay, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtExchange))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtPriceRent5)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtPriceRent6)))))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnPay)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 68, Short.MAX_VALUE)
-                                .addComponent(txtPriceRent4)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtPriceRent5))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtPriceRent3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtIdVid1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtPriceRent2))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtPriceRent7)
-                                .addGap(0, 13, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnAdd)
+                        .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtPriceRent6)
-                                .addComponent(btnAdd))
-                            .addComponent(txtExchange))))
+                                .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtPriceRent3))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtPriceRent2))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txtPriceRent7))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(14, 14, 14)
+                                    .addComponent(selectDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap())
         );
 
@@ -492,10 +507,47 @@ public class RentVideo extends javax.swing.JFrame {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
+        new Home().setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
         // TODO add your handling code here:
+        int cuspay= Integer.parseInt(txtCusPay.getText());
+        int total= Integer.parseInt(txtTotalPrice.getText());
+
+        if(cuspay >= total){
+            checkTransaction=0;
+        
+        DBAccess a= new DBAccess();
+        int maxIDRent=0;
+        ResultSet rs = a.Query("SELECT MAX(IDRent)AS maxid FROM RentalTransaction");
+        Date selectedDate = selectDay.getDate();
+        LocalDate selectedLocalDate = selectedDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();     
+                try {
+                    if(rs.next()){
+                        maxIDRent= rs.getInt("maxid");
+                        System.out.println("max id ne: " + maxIDRent);
+                    }else{
+                        System.out.println("khong tim ra " );
+                    }    
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex.toString(),"NULL",JOptionPane.ERROR_MESSAGE);
+                }
+        a.Query("UPDATE RentalTransaction SET TOTALPRICE ='" + total + "', STATUSRETURN = '0' WHERE IDRent= '" + maxIDRent + "'");     
+        String message = "ID Rent: " + maxIDRent +"\nDay Rent:"+currentDate+ "\nDay Return: "+selectedLocalDate+"\nTotal Price: " + total ;
+        JOptionPane.showMessageDialog(null, message, "Transaction Details", JOptionPane.INFORMATION_MESSAGE);  
+        String id= txtIdCus.getText();
+        a.Query("UPDATE Customers SET STATUSRENT = '1' WHERE ID = '" + id + "'");
+        clearFieldsCus();
+        clearVideoFieldVid();
+        ClearAfterPay();
+        ClearJTable();
+        }else{
+            String message = "Not enough money" ;
+            JOptionPane.showMessageDialog(null, message, "Transaction Details", JOptionPane.INFORMATION_MESSAGE); 
+        }
+        
     }//GEN-LAST:event_btnPayActionPerformed
 
     private void txtIdCusKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdCusKeyReleased
@@ -512,6 +564,20 @@ public class RentVideo extends javax.swing.JFrame {
         // TODO add your handling code here:
         searchVid();
     }//GEN-LAST:event_txtIdVidKeyReleased
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+       addList();
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void txtCusPayKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCusPayKeyReleased
+        // TODO add your handling code here:
+        int cuspay= Integer.parseInt(txtCusPay.getText()) ;
+        int total=Integer.parseInt(txtTotalPrice.getText());
+        int exchange= cuspay - total;
+        txtExchange.setText(String.valueOf(exchange));
+        
+    }//GEN-LAST:event_txtCusPayKeyReleased
 
     private void searchCus(){
         String idCus = txtIdCus.getText();
@@ -611,15 +677,117 @@ public class RentVideo extends javax.swing.JFrame {
     txtAu.setText("");
     txtAmount.setText("");
     txtPrice.setText("");
+    
 }
     private void updateDateTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss");
-        DateTimeFormatter format= DateTimeFormatter.ofPattern("dd/MM/yyyy ");
-        String dateBr = currentDate.format(format);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
+//        DateTimeFormatter format= DateTimeFormatter.ofPattern("yyyy-MM-dd ");
+//        String dateBr = currentDate.format(format);
         String formattedDateTime = dateFormat.format(new Date());
         labelDate.setText(formattedDateTime);
-        labelTime.setText(dateBr);
+//        labelTime.setText(dateBr);
         
+    }
+    public boolean checkRentedCus(){
+        String idCus = txtIdCus.getText();
+        DBAccess acc = new DBAccess();
+        ResultSet rs = acc.Query("SELECT STATUSRENT FROM Customers WHERE ID =  '" + idCus + "'");
+        try {
+            if (rs.next()) {
+                
+                int Active= rs.getInt("STATUSRENT");
+                if (Active == 0){
+                    return false;
+                }else{
+                    return true;
+                }               
+            } else {
+            }
+        } catch (SQLException ex) {
+            // Handle any SQL exception
+            JOptionPane.showMessageDialog(null, ex.toString(),"NULL",JOptionPane.ERROR_MESSAGE);
+        
+        }
+        return true;
+      
+    }
+    private void addList(){  
+        if(checkRentedCus() == false){
+            DBAccess a= new DBAccess();
+            Date selectedDate = selectDay.getDate();
+            String idCus= txtIdCus.getText();
+            String idVid=txtIdVid.getText();
+            int price=0;
+            int priceOfVid=0;
+            int amountVid= Integer.parseInt(txtQuantity.getText());
+            int amountStore=Integer.parseInt(txtAmount.getText());
+            int maxIDRent=0;           
+                if (selectedDate != null) {
+                    LocalDate selectedLocalDate = selectedDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();             
+                    LocalDate currentDate = LocalDate.now();                 
+                    long daysDifference = java.time.temporal.ChronoUnit.DAYS.between(currentDate, selectedLocalDate);
+                    if(checkTransaction==0){
+                        a.Query("Insert into RentalTransaction(DateOfBorrow,DateOfReturn,ID)"+
+                            "values('"+currentDate+"','"+selectedLocalDate+"','"+idCus+"')");
+                        checkTransaction++;
+                        System.out.println("check coi co qua đơn mới k nè"+checkTransaction);
+                    };
+                    ResultSet rs = a.Query("SELECT MAX(IDRent)AS maxid FROM RentalTransaction");
+                    try {
+                        if(rs.next()){
+                            maxIDRent= rs.getInt("maxid");
+                            System.out.println("max id ne: " + maxIDRent);
+                        }else{
+                            System.out.println("khong tim ra " );
+                        }    
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, ex.toString(),"NULL",JOptionPane.ERROR_MESSAGE);
+                    }
+                    ResultSet rs1 = a.Query("SELECT PRICeOFDAY FROM VIDEO WHERE ID= "+idVid);
+                    try {
+                        if(rs1.next() && amountVid <= amountStore){
+                            price= rs1.getInt("PRICEOFDAY");
+                            System.out.println("Gia tien ne" + price);
+                            priceOfVid=(int) (amountVid*price*daysDifference);
+                            System.out.println("Gia tien ne" + priceOfVid);
+                            Total= Total + priceOfVid;
+                            txtTotalPrice.setText(String.valueOf(Total));
+                        }else{
+                            System.out.println("khong tim ra gia " );
+                        }    
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, ex.toString(),"NULL",JOptionPane.ERROR_MESSAGE);
+                    };        
+                    if(amountVid <= amountStore){
+                        a.Query("Insert into DetailTransaction(IDRent,IDVid,Amount,RentalFee)"+
+                            "values('"+maxIDRent+"','"+idVid+"','"+amountVid+"','"+priceOfVid+"')");
+                        a.Query("UPDATE Video SET Amount = Amount -"+amountVid+" WHERE ID ="+ idVid);  
+                        DefaultTableModel jtb = (DefaultTableModel)jTable1.getModel();
+                        Object fillTable[]={txtNameVid.getText(),amountVid,daysDifference,priceOfVid};
+                        jtb.addRow(fillTable);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Over quality");
+                    }
+                } else {
+                        JOptionPane.showMessageDialog(null, "Vui lòng chọn một ngày.");
+                }
+        }else{
+            JOptionPane.showMessageDialog(null, "Rented");
+        }
+        
+    }
+    public void ClearAfterPay(){
+        txtIdCus.setText(null);
+        txtIdVid.setText(null);
+        txtQuantity.setText(null);
+        selectDay.setDate(null);
+        txtCusPay.setText(null);
+        txtTotalPrice.setText(null);
+        txtExchange.setText(null);
+    }
+    public void ClearJTable(){
+        DefaultTableModel jtb = (DefaultTableModel)jTable1.getModel();
+        jtb.setRowCount(0); 
     }
     /**
      * @param args the command line arguments
@@ -678,17 +846,17 @@ public class RentVideo extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel labelDate;
     private javax.swing.JLabel labelTime;
+    private com.toedter.calendar.JDateChooser selectDay;
     private javax.swing.JTextField txtActive;
     private javax.swing.JTextField txtAddr;
     private javax.swing.JTextField txtAmount;
     private javax.swing.JTextField txtAu;
     private javax.swing.JLabel txtAuthor;
+    private javax.swing.JTextField txtCusPay;
     private javax.swing.JTextField txtDOB;
     private javax.swing.JLabel txtExchange;
     private javax.swing.JTextField txtIdCus;
     private javax.swing.JTextField txtIdVid;
-    private javax.swing.JTextField txtIdVid1;
-    private javax.swing.JTextField txtIdVid2;
     private javax.swing.JTextField txtNameCus;
     private javax.swing.JTextField txtNameVid;
     private javax.swing.JTextField txtPhone;
@@ -701,6 +869,7 @@ public class RentVideo extends javax.swing.JFrame {
     private javax.swing.JLabel txtPriceRent5;
     private javax.swing.JLabel txtPriceRent6;
     private javax.swing.JLabel txtPriceRent7;
+    private javax.swing.JTextField txtQuantity;
     private javax.swing.JTextField txtStatus;
     private javax.swing.JLabel txtTotalPrice;
     private javax.swing.JTextField txtType;
